@@ -1,0 +1,28 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+
+<%
+%>
+
+
+	<div class="container-fluid header clearfix">
+		<div class="pull-left logo">
+			<div class="page-header sp-page-header">
+			  <h1>Logo<small>广州朗鑫投资后台管理</small></h1>
+			</div>
+		</div>
+			
+		<div class="pull-right user-info">
+	
+			<span class="glyphicon glyphicon-user sp-glyphicon"></span>
+			[${principal.name}]
+			&nbsp;&nbsp;
+			<span class="glyphicon glyphicon-cog sp-glyphicon"></span>
+			<a href="${ctx}/admin/system/contactUs" class="topmenu">
+			我的配置</a>
+			&nbsp;&nbsp;
+			<span class="glyphicon glyphicon-log-out sp-glyphicon"></span>
+			<a href="${ctx}/logout" class="topmenulast">
+			退出系统</a>
+		</div>
+			
+	</div>

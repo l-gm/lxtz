@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd" [
+<!ENTITY contextInclude SYSTEM "org/springframework/web/context/WEB-INF/contextInclude.xml">
+]>
+
+<beans>
+	<!-- Merchant -->
+	<bean id="merchantDAO" class="cn.dosy.platform.customer.dao.MerchantDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="merchantManagerBase" class="cn.dosy.platform.customer.service.MerchantManager">
+		<property name="merchantDAO" ref="merchantDAO"></property>
+	</bean>
+	
+	<bean id="merchantManager" parent="transactionBese">
+		<property name="target" ref="merchantManagerBase"></property>
+	</bean>
+	
+	<!-- Student -->
+	<bean id="studentDAO" class="cn.dosy.platform.customer.dao.StudentDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="studentManagerBase" class="cn.dosy.platform.customer.service.StudentManager">
+		<property name="studentDAO" ref="studentDAO"></property>
+	</bean>
+	
+	<bean id="studentManager" parent="transactionBese">
+		<property name="target" ref="studentManagerBase"></property>
+	</bean>
+	
+	<!-- StudentJob -->
+	<bean id="studentJobDAO" class="cn.dosy.platform.customer.dao.StudentJobDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="studentJobManagerBase" class="cn.dosy.platform.customer.service.StudentJobManager">
+		<property name="studentJobDAO" ref="studentJobDAO"></property>
+	</bean>
+	
+	<bean id="studentJobManager" parent="transactionBese">
+		<property name="target" ref="studentJobManagerBase"></property>
+	</bean>
+	
+	<!-- MerchantJob -->
+	<bean id="merchantJobDAO" class="cn.dosy.platform.customer.dao.MerchantJobDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="merchantJobManagerBase" class="cn.dosy.platform.customer.service.MerchantJobManager">
+		<property name="merchantJobDAO" ref="merchantJobDAO"></property>
+	</bean>
+	
+	<bean id="merchantJobManager" parent="transactionBese">
+		<property name="target" ref="merchantJobManagerBase"></property>
+	</bean>
+	
+	<!-- Comment -->
+	<bean id="commentDAO" class="cn.dosy.platform.customer.dao.CommentDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="commentManagerBase" class="cn.dosy.platform.customer.service.CommentManager">
+		<property name="commentDAO" ref="commentDAO"></property>
+	</bean>
+	
+	<bean id="commentManager" parent="transactionBese">
+		<property name="target" ref="commentManagerBase"></property>
+	</bean>
+	
+	<!-- Consumption -->
+	<bean id="consumptionDAO" class="cn.dosy.platform.customer.dao.ConsumptionDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="consumptionManagerBase" class="cn.dosy.platform.customer.service.ConsumptionManager">
+		<property name="consumptionDAO" ref="consumptionDAO"></property>
+	</bean>
+	
+	<bean id="consumptionManager" parent="transactionBese">
+		<property name="target" ref="consumptionManagerBase"></property>
+	</bean>
+	
+</beans>

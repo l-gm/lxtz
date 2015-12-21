@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+    <definition name="defaultTemplate" template="/WEB-INF/layouts/default/template.jsp">
+        <put-attribute name="Html_Title" value="广州朗鑫投资后台管理" />
+        
+        <put-attribute name="header" value="/WEB-INF/layouts/default/header.jsp" />
+        <put-attribute name="Html_Head" value="/WEB-INF/layouts/default/Html_Head.jsp" />
+        <put-attribute name="breadcrumb" value="/WEB-INF/layouts/default/breadcrumb.jsp" />
+        <put-attribute name="topmenu" value="/WEB-INF/layouts/default/topmenu.jsp" />
+        <put-attribute name="leftmenu" value="/WEB-INF/layouts/default/leftmenu.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/layouts/default/footer.jsp" />
+    </definition>
+    
+    <definition name="portalTemplate" template="/WEB-INF/layouts/portal/template.jsp">
+        <put-attribute name="Html_Title" value="广州朗鑫投资门户网站" />
+        <put-attribute name="header" value="/WEB-INF/layouts/portal/header.jsp" />
+        <put-attribute name="Html_Head" value="/WEB-INF/layouts/portal/Html_Head.jsp" />
+        <put-attribute name="breadcrumb" value="/WEB-INF/layouts/portal/breadcrumb.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/layouts/portal/footer.jsp" />
+    </definition>
+    
+  
+</tiles-definitions>

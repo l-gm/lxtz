@@ -1,0 +1,41 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <mapping class="cn.dosy.platform.admin.domain.MessageAttachment"/>
+        
+        <mapping class="cn.dosy.platform.admin.domain.Notice"/>
+        
+        <mapping class="cn.dosy.platform.admin.domain.Financial"/>
+        
+        <mapping class="cn.dosy.platform.admin.domain.Investment"/>
+        
+        <mapping class="cn.dosy.platform.admin.domain.MindChickenSoup"/>
+        
+        <mapping class="cn.dosy.platform.admin.domain.Example"/>
+        
+        <mapping class="cn.dosy.platform.admin.domain.CompanyProfile"/>
+        
+        <mapping class="cn.dosy.platform.admin.domain.Employment"/>
+        
+        <mapping class="cn.dosy.platform.admin.domain.ContactUs"/>
+        
+        <mapping class="cn.dosy.platform.admin.domain.Blogroll"/>
+        
+        <mapping class="cn.dosy.platform.admin.domain.ConversionLayout"/>
+        
+        <mapping class="cn.dosy.platform.admin.domain.AdvMail"/>
+        
+        <mapping class="cn.dosy.platform.admin.domain.AdvShortMessage"/>
+        
+        <mapping class="cn.dosy.platform.admin.domain.AdvVideo"/>
+        
+        <mapping class="cn.dosy.platform.admin.domain.AdvImg"/>
+        
+        <mapping class="cn.dosy.platform.admin.domain.AdvMusic"/>
+        
+        <mapping class="cn.dosy.platform.admin.domain.UsingHelp"/>
+    </session-factory>
+</hibernate-configuration>

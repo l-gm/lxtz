@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"  
+ xmlns:context="http://www.springframework.org/schema/context"  
+ xmlns:p="http://www.springframework.org/schema/p"  
+ xmlns:mvc="http://www.springframework.org/schema/mvc"  
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+ xsi:schemaLocation="http://www.springframework.org/schema/beans  
+      http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+      http://www.springframework.org/schema/context  
+      http://www.springframework.org/schema/context/spring-context.xsd  
+      http://www.springframework.org/schema/mvc  
+      http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+     
+     <!-- 注解扫描包 --> 
+	<context:component-scan base-package="cn.dosy" />
+	
+	<mvc:annotation-driven content-negotiation-manager="contentNegotiationManager" />   
+	<bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">   
+	    <property name="favorPathExtension" value="false" />  
+	    <property name="favorParameter" value="false" />   
+	    <property name="ignoreAcceptHeader" value="false" />   
+	    <property name="mediaTypes" >   
+	        <value>  
+	            atom=application/atom+xml  
+	            html=text/html  
+	            json=application/json  
+	            *=*/*  
+	        </value>   
+	    </property>  
+	</bean> 
+	
+	<!-- 静态资源访问 img,js,css-->
+	<mvc:resources location="/resources/" mapping="/resources/**" />
+	
+	<!-- 临时映射 -->
+	<mvc:view-controller path="/admin/index" view-name="/admin/index"/>
+	<mvc:view-controller path="/error/400" view-name="/error/400" />
+	<mvc:view-controller path="/error/404" view-name="/error/404" />
+	<mvc:view-controller path="/error/500" view-name="/error/500" />
+
+
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+	
+	<!-- 开启文件上传配置 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="utf-8" />
+		<property name="maxUploadSize" value="10485760000" />
+		<property name="maxInMemorySize" value="40960" />
+	</bean>
+	
+	<!-- Tiles configuration -->
+    <bean id="tilesConfigurer"
+        class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+        <property name="definitions">
+            <list>
+                <value>/WEB-INF/tiles/tiles-definitions.xml</value>
+            </list>
+        </property>
+    </bean>
+	
+ </beans>  

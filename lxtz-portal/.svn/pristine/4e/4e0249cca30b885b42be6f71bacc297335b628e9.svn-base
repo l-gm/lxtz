@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd"
+	default-lazy-init="true">
+
+	<description>权限配置</description>
+
+	<bean class="cn.dosy.platform.config.domain.Menu" p:name="首页" p:code="INDEX" p:permissionCodeConfig="" 
+		p:menuURI="/admin/index" p:iconURI="" p:cssClass="">
+
+	</bean>
+
+	<bean class="cn.dosy.platform.config.domain.Menu" p:name="文章管理" p:code="MGM" p:permissionCodeConfig=""
+		p:menuURI="/admin/article/notice" p:iconURI="" p:cssClass="">
+		<property name="children">
+			<list>
+				<bean class="cn.dosy.platform.config.domain.Menu" p:name="最新公告" p:code="message" p:permissionCodeConfig=""
+					p:menuURI="/admin/article/notice" p:iconURI="" p:cssClass="">
+				</bean>
+				<bean class="cn.dosy.platform.config.domain.Menu" p:name="理财频道" p:code="message" p:permissionCodeConfig=""
+					p:menuURI="/admin/article/financial" p:iconURI="" p:cssClass="">
+				</bean>
+				<bean class="cn.dosy.platform.config.domain.Menu" p:name="投资达人榜" p:code="message" p:permissionCodeConfig=""
+					p:menuURI="/admin/article/investment" p:iconURI="" p:cssClass="">
+				</bean>
+				<bean class="cn.dosy.platform.config.domain.Menu" p:name="心灵鸡汤" p:code="message" p:permissionCodeConfig=""
+					p:menuURI="/admin/article/mindChickenSoup" p:iconURI="" p:cssClass="">
+				</bean>
+				<bean class="cn.dosy.platform.config.domain.Menu" p:name="成功案例" p:code="message" p:permissionCodeConfig=""
+					p:menuURI="/admin/article/example" p:iconURI="" p:cssClass="">
+				</bean>
+				<bean class="cn.dosy.platform.config.domain.Menu" p:name="使用帮助" p:code="message" p:permissionCodeConfig=""
+					p:menuURI="/admin/article/usingHelp" p:iconURI="" p:cssClass="">
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<bean class="cn.dosy.platform.config.domain.Menu" p:name="兼职信息管理" p:code="MGM" p:permissionCodeConfig=""
+		p:menuURI="/admin/partTime/merchant" p:iconURI="" p:cssClass="">
+		<property name="children">
+			<list>
+				<bean class="cn.dosy.platform.config.domain.Menu" p:name="商家兼职信息" p:code="student" p:permissionCodeConfig=""
+					p:menuURI="/admin/partTime/merchant" p:iconURI="" p:cssClass="">
+				</bean>
+				<bean class="cn.dosy.platform.config.domain.Menu" p:name="学生求职信息" p:code="student" p:permissionCodeConfig=""
+					p:menuURI="/admin/partTime/student" p:iconURI="" p:cssClass="">
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<bean class="cn.dosy.platform.config.domain.Menu" p:name="用户管理 " p:code="MGM" p:permissionCodeConfig=""
+		p:menuURI="/admin/user/merchant" p:iconURI="" p:cssClass="">
+		<property name="children">
+			<list>
+				<bean class="cn.dosy.platform.config.domain.Menu" p:name="商家管理" p:code="student" p:permissionCodeConfig=""
+					p:menuURI="/admin/user/merchant" p:iconURI="" p:cssClass="">
+				</bean>
+				<bean class="cn.dosy.platform.config.domain.Menu" p:name="个人管理" p:code="student" p:permissionCodeConfig=""
+					p:menuURI="/admin/user/student" p:iconURI="" p:cssClass="">
+				</bean>
+				<bean class="cn.dosy.platform.config.domain.Menu" p:name="用户反馈" p:code="student" p:permissionCodeConfig=""
+					p:menuURI="/admin/user/comment" p:iconURI="" p:cssClass="">
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<bean class="cn.dosy.platform.config.domain.Menu" p:name="客户管理" p:code="MGM" p:permissionCodeConfig=""
+		p:menuURI="/admin/client/consumption" p:iconURI="" p:cssClass="">
+		<property name="children">
+			<list>
+				<bean class="cn.dosy.platform.config.domain.Menu" p:name="个人消费贷款" p:code="student" p:permissionCodeConfig=""
+					p:menuURI="/admin/client/consumption" p:iconURI="" p:cssClass="">
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<bean class="cn.dosy.platform.config.domain.Menu" p:name="广告管理" p:code="MGM" p:permissionCodeConfig=""
+		p:menuURI="/admin/advertisement/advMail" p:iconURI="" p:cssClass="">
+		<property name="children">
+			<list>
+				<bean class="cn.dosy.platform.config.domain.Menu" p:name="邮件" p:code="student" p:permissionCodeConfig=""
+					p:menuURI="/admin/advertisement/advMail" p:iconURI="" p:cssClass="">
+				</bean>
+				<bean class="cn.dosy.platform.config.domain.Menu" p:name="短信" p:code="student" p:permissionCodeConfig=""
+					p:menuURI="/admin/advertisement/advShortMessage" p:iconURI="" p:cssClass="">
+				</bean>
+				<bean class="cn.dosy.platform.config.domain.Menu" p:name="视频" p:code="student" p:permissionCodeConfig=""
+					p:menuURI="/admin/advertisement/advVideo" p:iconURI="" p:cssClass="">
+				</bean>
+				<bean class="cn.dosy.platform.config.domain.Menu" p:name="商家广告" p:code="student" p:permissionCodeConfig=""
+					p:menuURI="/admin/advertisement/advImg" p:iconURI="" p:cssClass="">
+				</bean>
+				<bean class="cn.dosy.platform.config.domain.Menu" p:name="门户音乐" p:code="student" p:permissionCodeConfig=""
+					p:menuURI="/admin/advertisement/advMusic" p:iconURI="" p:cssClass="">
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<bean class="cn.dosy.platform.config.domain.Menu" p:name="系统管理" p:code="MGM" p:permissionCodeConfig=""
+		p:menuURI="/admin/system/companyProfile" p:iconURI="" p:cssClass="">
+		<property name="children">
+			<list>
+				<bean class="cn.dosy.platform.config.domain.Menu" p:name="公司简介" p:code="student" p:permissionCodeConfig=""
+					p:menuURI="/admin/system/companyProfile" p:iconURI="" p:cssClass="">
+				</bean>
+				<bean class="cn.dosy.platform.config.domain.Menu" p:name="招聘信息" p:code="student" p:permissionCodeConfig=""
+					p:menuURI="/admin/system/employment" p:iconURI="" p:cssClass="">
+				</bean>
+				<bean class="cn.dosy.platform.config.domain.Menu" p:name="联系我们" p:code="student" p:permissionCodeConfig=""
+					p:menuURI="/admin/system/contactUs" p:iconURI="" p:cssClass="">
+				</bean>
+				<bean class="cn.dosy.platform.config.domain.Menu" p:name="友情链接" p:code="student" p:permissionCodeConfig=""
+					p:menuURI="/admin/system/blogroll" p:iconURI="" p:cssClass="">
+				</bean>
+				<bean class="cn.dosy.platform.config.domain.Menu" p:name="版面转换" p:code="student" p:permissionCodeConfig=""
+					p:menuURI="/admin/system/conversionLayout" p:iconURI="" p:cssClass="">
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	
+	
+	
+
+	
+</beans>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
+  "http://java.sun.com/dtd/web-jsptaglibrary_1.2.xsd">
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd" 
+  version="2.0">  
+	<tlib-version>2.0</tlib-version>
+	<jsp-version>2.0</jsp-version>
+	<short-name>jarTag</short-name>
+	<uri>http://cn.dosy.com/dTags</uri>
+	<description>
+		dTags
+	</description>
+
+	<tag-file>
+		<name>pagination</name>
+		<path>/WEB-INF/tags/ui_control/pagination.tag</path>
+		
+	</tag-file>
+	
+	<tag-file>
+		<name>simplePagination</name>
+		<path>/WEB-INF/tags/ui_control/simplePagination.tag</path>
+		
+	</tag-file>
+	
+</taglib>

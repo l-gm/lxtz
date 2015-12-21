@@ -1,0 +1,550 @@
+package cn.dosy.platform.customer.web;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
+
+import cn.dosy.platform.config.utils.JavaMailUtil;
+import cn.dosy.platform.core.ApplicationContext;
+import cn.dosy.platform.core.utils.FileUtils;
+import cn.dosy.platform.core.utils.StringUtils;
+import cn.dosy.platform.core.web.BaseController;
+import cn.dosy.platform.customer.domain.Comment;
+import cn.dosy.platform.customer.domain.Consumption;
+import cn.dosy.platform.customer.domain.Student;
+import cn.dosy.platform.customer.domain.StudentJob;
+import cn.dosy.platform.customer.service.ICommentManager;
+import cn.dosy.platform.customer.service.IConsumptionManager;
+import cn.dosy.platform.customer.service.IStudentJobManager;
+import cn.dosy.platform.customer.service.IStudentManager;
+
+/**
+ * <p>
+ *  学生门户操作 Controller
+ * </p>
+ * 
+ * <p>
+ * Copyright: 2014 . All rights reserved.
+ * </p>
+ * <p>
+ * Company: dosy
+ * </p>
+ * <p>
+ * CreateDate:2014年12月14日
+ * </p>
+ * 
+ * @author MM
+ * @history 创建文档；Mender:MM；Date:2014年12月14日；
+ */
+@Controller
+@RequestMapping(value = "portal/infoCenter/student")
+@SessionAttributes({ "studentJob", "email", "phone_code" })
+public class StudentController extends BaseController<Student> {
+
+	@Resource(name = "studentManager")
+	protected IStudentManager studentManager;
+	
+	@Resource(name = "studentJobManager")
+	protected IStudentJobManager studentJobManager;
+	
+	@Resource(name = "commentManager")
+	protected ICommentManager commentManager;
+	
+	@Resource(name = "consumptionManager")
+	protected IConsumptionManager consumptionManager;
+	
+	@RequestMapping(value = "basic")
+	public String basic(HttpServletRequest request, Model model) {
+		Student student = (Student)request.getSession().getAttribute("studentPrincipal");
+		if (student == null) {
+			model.addAttribute("loginMessage", "未登录");
+			return "/loginStudent";
+		}
+		if (!"person_male.gif".equalsIgnoreCase(student.getIconsName())) {
+			try {
+				String resourcePath = ApplicationContext.getApplicationPath();
+				FileUtils.SaveFileFromInputStream(new ByteArrayInputStream(student.getIconsPicture()),
+						resourcePath + "/resources/img/portal/icons", student.getIconsName());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return getRelativePath("/basic");
+	}
+	
+	@RequestMapping(value = "contact")
+	public String contact(HttpServletRequest request, Model model) {
+		Student student = (Student)request.getSession().getAttribute("studentPrincipal");
+		if (student == null) {
+			model.addAttribute("loginMessage", "未登录");
+			return "/loginStudent";
+		}
+		
+		return getRelativePath("/contact");
+	}
+	
+	@RequestMapping(value = "edu")
+	public String edu(HttpServletRequest request, Model model) {
+		Student student = (Student)request.getSession().getAttribute("studentPrincipal");
+		if (student == null) {
+			model.addAttribute("loginMessage", "未登录");
+			return "/loginStudent";
+		}
+		
+		return getRelativePath("/edu");
+	}
+	
+	@RequestMapping(value = "consumption")
+	public String consumption(HttpServletRequest request, Model model) {
+		Student student = (Student)request.getSession().getAttribute("studentPrincipal");
+		if (student == null) {
+			model.addAttribute("loginMessage", "未登录");
+			return "/loginStudent";
+		}
+		Consumption query = new Consumption();
+		query.setStudentId(student.getId());
+		List<Consumption> list = consumptionManager.query(query);
+		
+		model.addAttribute("list", list);
+		return getRelativePath("/list_consumption");
+	}
+	
+	@RequestMapping(value = "consumption/add")
+	public String add_consumption(final SessionStatus status, HttpServletRequest request, Model model) {
+		Student student = (Student)request.getSession().getAttribute("studentPrincipal");
+		if (student == null) {
+			model.addAttribute("loginMessage", "未登录");
+			return "/loginStudent";
+		}
+		status.setComplete();
+		return getRelativePath("/add_consumption");
+	}
+	
+	@RequestMapping(value = "consumption/save", method = RequestMethod.POST)
+	public String save_consumption(Consumption consumption, HttpServletRequest request) {
+		Student student = (Student)request.getSession().getAttribute("studentPrincipal");
+		if (student != null) {
+			consumption.setStudentId(student.getId());
+			consumption.setStudentName(student.getName());
+			consumption.setApplyTime(new Date());
+			consumptionManager.add(consumption);
+		}
+		return CONTROLLER_REDIRECT + "/portal/infoCenter/student/consumption";
+	}
+	
+	@RequestMapping(value = "consumption/view/{id}", method = RequestMethod.GET)
+	public String view_consumption(@PathVariable("id")String id, Model model, HttpServletRequest request) {
+		Student student = (Student)request.getSession().getAttribute("studentPrincipal");
+		if (student == null) {
+			model.addAttribute("loginMessage", "未登录");
+			return "/loginStudent";
+		}
+		Consumption consumption = consumptionManager.findById(id);
+		model.addAttribute("entity", consumption);
+		return getRelativePath("/view_consumption");
+	}
+	
+	@RequestMapping(value = "comment")
+	public String comment(HttpServletRequest request, Model model) {
+		Student student = (Student)request.getSession().getAttribute("studentPrincipal");
+		if (student == null) {
+			model.addAttribute("loginMessage", "未登录");
+			return "/loginStudent";
+		}
+		Comment query = new Comment();
+		query.setIsCancle(null);
+		query.setForbidden(null);
+		query.setStudent(student);
+		List<Comment> list = commentManager.query(query);
+
+		model.addAttribute("list", list);
+		return getRelativePath("/list_comment");
+	}
+	
+	@RequestMapping(value = "comment/add")
+	public String add_comment(final SessionStatus status, HttpServletRequest request, Model model) {
+		Student student = (Student)request.getSession().getAttribute("studentPrincipal");
+		if (student == null) {
+			model.addAttribute("loginMessage", "未登录");
+			return "/loginStudent";
+		}
+		status.setComplete();
+		return getRelativePath("/add_comment");
+	}
+	
+	@RequestMapping(value = "comment/save", method = RequestMethod.POST)
+	public String save_comment(Comment comment, HttpServletRequest request) {
+		Student student = (Student)request.getSession().getAttribute("studentPrincipal");
+		if (student != null) {
+			comment.setStudent(student);
+			commentManager.add(comment);
+		}
+		return CONTROLLER_REDIRECT + "/portal/infoCenter/student/comment";
+	}
+	
+	@RequestMapping(value = "studentJob")
+	public String studentJob(HttpServletRequest request, Model model,  final SessionStatus status) {
+		status.setComplete();
+		Student student = (Student)request.getSession().getAttribute("studentPrincipal");
+		if (student == null) {
+			model.addAttribute("loginMessage", "未登录");
+			return "/loginStudent";
+		}
+		
+		StudentJob query = new StudentJob();
+		query.setForbidden(null);
+		query.setStudent(student);
+		
+		List<StudentJob> list = studentJobManager.query(query);
+		
+		model.addAttribute("list", list);
+		return getRelativePath("/list_studentJob");
+	}
+	
+	@RequestMapping(value = "studentJob/add", method = RequestMethod.GET)
+	public String add_studentJob(final SessionStatus status) {
+		status.setComplete();
+		return getRelativePath("/add_studentJob");
+	}
+	
+	@RequestMapping(value = "studentJob/save", method = RequestMethod.POST)
+	public String save_studentJob(StudentJob studentJob, HttpServletRequest request) {
+		Student student = (Student)request.getSession().getAttribute("studentPrincipal");
+		if (student != null) {
+			studentJob.setStudent(student);
+			studentJobManager.add(studentJob);
+		}
+		
+		return CONTROLLER_REDIRECT + "/portal/infoCenter/student/studentJob";
+	}
+	
+	@RequestMapping(value = "studentJob/forbidden/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	public String forbidden(@PathVariable("id")String id) {
+		StudentJob studentJob = studentJobManager.findById(id);
+		if (studentJob != null) {
+			studentJob.setForbidden(true);
+			studentJob.setLastModifiedDate(new Date());
+			studentJobManager.update(studentJob);
+		}
+		
+		return "success";
+	}
+	
+	@RequestMapping(value = "studentJob/view/{id}", method = RequestMethod.GET)
+	public String view_studentJob(@PathVariable("id")String id, Model model, HttpServletRequest request, final SessionStatus status) {
+		status.setComplete();
+		Student student = (Student)request.getSession().getAttribute("studentPrincipal");
+		if (student == null) {
+			model.addAttribute("loginMessage", "未登录");
+			return "/loginStudent";
+		}
+		StudentJob studentJob = studentJobManager.findById(id);
+		model.addAttribute("entity", studentJob);
+		return getRelativePath("/view_studentJob");
+	}
+	
+	@RequestMapping(value = "studentJob/update/{id}", method = RequestMethod.GET)
+	public String updateStudentJob(@PathVariable("id")String id, Model model, HttpServletRequest request) {
+		Student student = (Student)request.getSession().getAttribute("studentPrincipal");
+		if (student == null) {
+			model.addAttribute("loginMessage", "未登录");
+			return "/loginStudent";
+		}
+		StudentJob studentJob = studentJobManager.findById(id);
+		model.addAttribute("studentJob", studentJob);
+		return getRelativePath("/update_studentJob");
+	}
+	
+	@RequestMapping(value = "studentJob/update", method = RequestMethod.POST)
+	public String updateStudentJob(String title, String content, Model model, HttpServletRequest request) {
+		StudentJob studentJob = (StudentJob)request.getSession().getAttribute("studentJob");
+		studentJob.setTitle(title);
+		studentJob.setContent(content);
+		studentJob.setLastModifiedDate(new Date());
+		studentJobManager.update(studentJob);
+		return CONTROLLER_REDIRECT + "/portal/infoCenter/student/studentJob";
+	}
+	
+	@RequestMapping(value = "updateBasic", method = RequestMethod.GET)
+	public String updateBasic() {
+		return getRelativePath("/updateBasic");
+	}
+	
+	@RequestMapping(value = "updateBasic", method = RequestMethod.POST)
+	public String updateBasic(Student updateStudent, HttpServletRequest request, Model model) {
+		Student student = (Student)request.getSession().getAttribute("studentPrincipal");
+		if (student == null) {
+			model.addAttribute("loginMessage", "未登录");
+			return "/loginStudent";
+		}
+		
+		student.setName(updateStudent.getName());
+		student.setEducationLevel(updateStudent.getEducationLevel());
+		student.setIdentityNumber(updateStudent.getIdentityNumber());
+		student.setStudentNumber(updateStudent.getStudentNumber());
+		student.setIdentityOrgLocated(updateStudent.getIdentityOrgLocated());
+		student.setBirth(updateStudent.getBirth());
+		student.setSex(updateStudent.getSex());
+		student.setTelephone(updateStudent.getTelephone());
+		student.setSinaAccount(updateStudent.getSinaAccount());
+		student.setQq(updateStudent.getQq());
+		student.setFamilyAddress(updateStudent.getFamilyAddress());
+		student.setFamilyAddressPostcode(updateStudent.getFamilyAddressPostcode());
+		student.setLiveAddress(updateStudent.getLiveAddress());
+		student.setLiveAddressPostcode(updateStudent.getLiveAddressPostcode());
+		
+		studentManager.update(student);
+		return CONTROLLER_REDIRECT + "/portal/infoCenter/student/basic";
+	}
+	
+	@RequestMapping(value = "updateContact", method = RequestMethod.GET)
+	public String updateContact() {
+		return getRelativePath("/updateContact");
+	}
+
+	@RequestMapping(value = "updateContact", method = RequestMethod.POST)
+	public String updateContact(Student updateStudent, HttpServletRequest request, Model model) {
+		Student student = (Student)request.getSession().getAttribute("studentPrincipal");
+		if (student == null) {
+			model.addAttribute("loginMessage", "未登录");
+			return "/loginStudent";
+		}
+		
+		student.setParent1(updateStudent.getParent1());
+		student.setParent2(updateStudent.getParent2());
+		student.setRelation1(updateStudent.getRelation1());
+		student.setRelation2(updateStudent.getRelation2());
+		student.setParentAddress1(updateStudent.getParentAddress1());
+		student.setParentAddress2(updateStudent.getParentAddress2());
+		student.setParentPhone1(updateStudent.getParentPhone1());
+		student.setParentPhone2(updateStudent.getParentPhone2());
+		student.setParentTelephone1(updateStudent.getParentTelephone1());
+		student.setParentTelephone2(updateStudent.getParentTelephone2());
+		student.setClassmateName1(updateStudent.getClassmateName1());
+		student.setClassmateName2(updateStudent.getClassmateName2());
+		student.setClassmatePhone1(updateStudent.getClassmatePhone1());
+		student.setClassmatePhone2(updateStudent.getClassmatePhone2());
+		student.setClassmateQQ1(updateStudent.getClassmateQQ1());
+		student.setClassmateQQ2(updateStudent.getClassmateQQ2());
+		student.setMasterName(updateStudent.getMasterName());
+		student.setMasterPhone(updateStudent.getMasterPhone());
+		student.setMasterWorkAddress(updateStudent.getMasterWorkAddress());
+		
+		studentManager.update(student);
+		return CONTROLLER_REDIRECT + "/portal/infoCenter/student/contact";
+	}
+	
+	@RequestMapping(value = "updateEdu", method = RequestMethod.GET)
+	public String updateEdu() {
+		return getRelativePath("/updateEdu");
+	}
+	
+	@RequestMapping(value = "updateEdu", method = RequestMethod.POST)
+	public String updateEdu(Student updateStudent, HttpServletRequest request, Model model) {
+		Student student = (Student)request.getSession().getAttribute("studentPrincipal");
+		if (student == null) {
+			model.addAttribute("loginMessage", "未登录");
+			return "/loginStudent";
+		}
+		
+		student.setPrimarySchoolName(updateStudent.getPrimarySchoolName());
+		student.setPrimarySchoolAddress(updateStudent.getPrimarySchoolAddress());
+		student.setMiddleSchoolName(updateStudent.getMiddleSchoolName());
+		student.setMiddleSchoolAddress(updateStudent.getMiddleSchoolAddress());
+		student.setHighSchoolName(updateStudent.getHighSchoolName());
+		student.setHighSchoolAddress(updateStudent.getHighSchoolAddress());
+		student.setUniversityName(updateStudent.getUniversityName());
+		student.setCollegeName(updateStudent.getCollegeName());
+		student.setMajorName(updateStudent.getMajorName());
+		student.setClassName(updateStudent.getClassName());
+		student.setEnterScholTime(updateStudent.getEnterScholTime());
+		student.setGraduationTime(updateStudent.getGraduationTime());
+		
+		studentManager.update(student);
+		return CONTROLLER_REDIRECT + "/portal/infoCenter/student/edu";
+	}
+	
+	@RequestMapping(value = "updatePsd", method = RequestMethod.GET)
+	public String updatePsd() {
+		return getRelativePath("/updatePsd");
+	}
+	
+	@RequestMapping(value = "updatePsd", method = RequestMethod.POST)
+	public String updatePsd(String oldPsd, String newPsd, HttpServletRequest request, Model model) {
+		Student student = (Student)request.getSession().getAttribute("studentPrincipal");
+		if (student == null) {
+			model.addAttribute("loginMessage", "未登录");
+			return "/loginStudent";
+		}
+		if (!student.getPassword().equals(oldPsd)) {
+			model.addAttribute("errorMessage", "原密码错误，修改密码失败");
+			return getRelativePath("/updatePsd");
+		}
+		student.setPassword(newPsd);
+		studentManager.update(student);
+		
+		request.getSession().setAttribute("studentPrincipal", student);
+		return CONTROLLER_REDIRECT + "/portal/infoCenter/student/basic";
+	}
+	
+	@RequestMapping(value = "updateIcons", method = RequestMethod.GET)
+	public String updateIcons() {
+		return getRelativePath("/updateIcons");
+	}
+	
+	@RequestMapping(value = "updateIcons", method = RequestMethod.POST)
+	public String updateIcons(HttpServletRequest request, Model model, MultipartFile file) {
+		Student student = (Student)request.getSession().getAttribute("studentPrincipal");
+		if (student == null) {
+			model.addAttribute("loginMessage", "未登录");
+			return "/loginStudent";
+		}
+		if (!file.getOriginalFilename().endsWith(".jpg") &&
+				!file.getOriginalFilename().endsWith(".jpeg") &&
+				!file.getOriginalFilename().endsWith(".gif") &&
+				!file.getOriginalFilename().endsWith(".png") ) {
+			model.addAttribute("result", "图片文件类型不符合，请上传jpg,jpeg,gif,png类型图片文件");
+			return getRelativePath("/updateIcons");
+		}
+		if (file.getSize() > 1024 * 1024 * 10) {
+			model.addAttribute("result", "图片文件大于10M,请重新选择");
+			return getRelativePath("/updateIcons");
+		}
+		
+		try {
+			String resourcePath = ApplicationContext.getApplicationPath();
+			String type = FileUtils.getSuffix(file.getOriginalFilename());
+			student.setIconsName(student.getId() + "." + type);
+			student.setIconsPicture(file.getBytes());
+			studentManager.update(student);
+			request.getSession().setAttribute("studentPrincipal", student);
+			FileUtils.SaveFileFromInputStream(new ByteArrayInputStream(file.getBytes()),
+					resourcePath + "/resources/img/portal/icons", student.getIconsName());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return CONTROLLER_REDIRECT + "/portal/infoCenter/student/basic";
+	}
+	
+	@RequestMapping(value = "updateMail", method = RequestMethod.GET)
+	public String updateMail(final SessionStatus status) {
+		status.setComplete();
+		return getRelativePath("/updateMail1");
+	}
+	
+	@RequestMapping(value = "updateMail", method = RequestMethod.POST)
+	public String updateMail(String email, Model model, HttpServletRequest request) {
+		 Student student = (Student)request.getSession().getAttribute("studentPrincipal");
+		if (student == null) {
+			model.addAttribute("loginMessage", "未登录");
+			return "/loginStudent";
+		}
+		String checkCode = UUID.randomUUID().toString();
+		student.setCheckCode(checkCode);
+		
+		//send check mail
+		String title = "朗鑫门户邮箱校验";
+		String content = "<div style=\"background-color: #d0d0d0;padding: 40px;text-align: center;width=100%;\">" + 
+								"<div style=\"padding:30px;background-color: #ffffff;width:500px;margin: 0 auto;text-align: left;line-height: 1.5;word-wrap: break-word;word-break: break-all;-webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;\">" +  
+									"您好!<br/><br/>" + 
+				"感谢你使用朗鑫门户平台。 <br/>" + 
+				"你的登录邮箱为：" + email + "。请点击以下链接激活帐号：<br/><br/>" + 
+				request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + 
+				"/portal/infoCenter/student/s_checkCode?checkCode=" + checkCode + " <br/>" + 
+				"如果以上链接无法点击，请将上面的地址复制到你的浏览器(如IE)的地址栏进入朗鑫门户平台。 <br/><br/> " +
+				"此邮件为系统所发，请勿直接回复。 <br/><br/> " +
+				"<div style=\"text-align: right;\">Thanks<br/>朗鑫门户</div></div></div>";
+		
+		JavaMailUtil.setHtmlMail(title, content, email);
+		
+		model.addAttribute("email", email);
+		return getRelativePath("/updateMail2");
+	}
+	
+	@RequestMapping(value = "s_checkCode", method = RequestMethod.GET)
+	public String student_register3(@RequestParam(value="checkCode")String checkCode, HttpServletRequest request, Model model) {
+		String registerResult = "1";
+		
+		Student student = (Student)request.getSession().getAttribute("studentPrincipal");
+		String email = (String)request.getSession().getAttribute("email");
+		if (StringUtils.isBlank(email)) {
+			registerResult = "2";
+		} else {
+			if (!student.getCheckCode().equals(checkCode)) {
+				registerResult = "4";
+			} else {
+				student.setEmail(email);
+				studentManager.update(student);
+				request.getSession().setAttribute("studentPrincipal", student);
+			}
+		}
+		
+		model.addAttribute("registerResult", registerResult);
+		return getRelativePath("/updateMail3");
+	}
+	
+	@RequestMapping(value = "updatePhone", method = RequestMethod.GET)
+	public String updatePhone(HttpServletRequest request, Model model, final SessionStatus status) {
+		status.setComplete();
+		Student student = (Student)request.getSession().getAttribute("studentPrincipal");
+		if (student == null) {
+			model.addAttribute("loginMessage", "未登录");
+			return "/loginStudent";
+		}
+		return getRelativePath("/updatePhone");
+	}
+	
+	@RequestMapping(value = "updatePhone", method = RequestMethod.POST)
+	public String updatePhone(String phone, HttpServletRequest request, Model model) {
+		Student student = (Student)request.getSession().getAttribute("studentPrincipal");
+		if (student == null) {
+			model.addAttribute("loginMessage", "未登录");
+			return "/loginStudent";
+		}
+		student.setPhone(phone);
+		studentManager.update(student);
+		
+		request.getSession().setAttribute("studentPrincipal", student);
+		return CONTROLLER_REDIRECT + "/portal/infoCenter/student/basic";
+	}
+	
+	@RequestMapping(value = "vertifyPhone", method = RequestMethod.POST)
+	@ResponseBody
+	public boolean vertifyPhone(@RequestParam("phone") String phone, Model model) {
+		int phone_code = (int)((Math.random()*9+1)*100000);
+		
+		System.out.println("send sms to: " + phone);
+		System.out.println("the phone_code is: " + phone_code);
+		model.addAttribute("phone_code", phone_code + "");
+		return true;
+	}
+	
+	@RequestMapping(value = "checkValidYzm")
+	@ResponseBody
+	public String checkValidYzm(@RequestParam("yzm") String yzm, HttpServletRequest request) {
+		String phone_code = (String)request.getSession().getAttribute("phone_code");
+		System.out.println("the phone_code is: " + phone_code);
+		if (StringUtils.isNotBlank(phone_code) && yzm.equals(phone_code)) {
+			return Boolean.TRUE.toString();
+		} else {
+			return Boolean.FALSE.toString();
+		}
+	}
+}

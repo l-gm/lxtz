@@ -1,0 +1,160 @@
+<%@ page contentType="text/html;charset=utf-8" isELIgnored="false"%>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles-extras" prefix="tilesx" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html >
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title><tiles:insertAttribute name="Html_Title" /></title>
+
+
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="stylesheet" href="${resourcePath}/css/rest.css" />
+<link rel="stylesheet" href="${resourcePath}/css/main.css" />
+
+<script>var resourcePath = "${resourcePath}"</script>
+
+<script src="${resourcePath}/js/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="${resourcePath}/js/jquery-ui-1.10.4.custom.min.js" type="text/javascript"></script>
+<script src="${resourcePath}/js/jquery.validate.min.js" type="text/javascript"></script>
+
+<tiles:insertAttribute name="Html_Head" />	
+
+<!-- <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?0fcdc2ab82c3cdc50d46d34b8688daee";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?9cd4bdac87b18d3059d7a057b5eeeb6a";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+<body class="bg">
+	<tilesx:useAttribute name="showNameTitlePannel" classname="java.lang.String" ignore="true" />
+
+	<tiles:insertAttribute name="header" />
+	
+		<div id="default-container" class="portal-container">
+		    <tiles:insertAttribute name="body" />
+		</div>
+		
+	<tiles:insertAttribute name="footer" />
+	
+	<!-- 右侧浮动框开始 -->
+	<div class="floatBox">
+		<div class="feedback">
+			<a href="${ctx}/portal/infoCenter/student/comment/add">我要反馈</a>
+		</div>
+		<div class="musicPlayer">
+			<a href="javascript:void(0)" class="playBtn music" id="playPause">播放音乐</a>
+		</div>
+		<div class="scrollTop">
+			<a href="#">回到顶部</a>
+		</div>
+	</div>
+	<!-- 右侧浮动框结束 -->
+	<%-- <script src="${resourcePath}/js/jquery.min.js"></script> --%>
+	<script>
+		$(document).ready(function() {
+			resizeDefault_Container('default-container');
+		});
+		
+		
+		$(window).resize(function() {
+		    clearTimeout($.data(this, 'resizeTimer'));
+		    $.data(this, 'resizeTimer', setTimeout(function() {
+		    	resizeDefault_Container('default-container');
+		    }, 200));
+		});
+		
+		function resizeDefault_Container(id){
+			var container = $('#'+id);
+			container.css("min-height",(document.documentElement.clientHeight-380));
+			if((document.documentElement.clientHeight-380)>container.height()) {
+				// IE8
+				container.height(document.documentElement.clientHeight-380);
+			}
+		};
+	
+		//MP3
+		$(function() {
+			var $audio = $('<audio src="${resourcePath}/media/p_music.mp3"></audio>');
+			$audio.appendTo($('.musicPlayer'));
+			$('#playPause').click(function() {
+				if($audio[0].paused) {
+					$audio[0].play();
+					$(this).html('').addClass('play');
+				} else {
+					$audio[0].pause();
+					$(this).removeClass('play').addClass('music');
+				}
+			});
+
+			$audio.on("ended", function() {
+				$(this).removeClass('play').addClass('music');
+			});
+		});
+		
+		//header浮动
+		$(function() {
+			$(window).scroll(function() {
+				if($(window).scrollTop()>30) {
+					$('.header').addClass('fixed');
+				} else {
+					$('.header').removeClass('fixed');
+				}
+			});
+		});
+
+		//一键分享
+		window._bd_share_config={
+				"common":{
+					"bdSnsKey":{},
+					"bdText":"",
+					"bdMini":"2",
+					"bdMiniList":false,
+					"bdPic":"",
+					"bdStyle":"0",
+					"bdSize":"16"
+				},
+				"slide":{
+					"type":"slide",
+					"bdImg":"0",
+					"bdPos":"left",
+					"bdTop":"100"
+				},
+				"image":{
+					"viewList":["qzone","tsina","tqq","renren","weixin"],
+					"viewText":"分享到：","viewSize":"16"
+				},
+				"selectShare":{
+					"bdContainerClass":null,
+					"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};
+				with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+	
+				
+	
+				
+	</script>
+</body>
+
+</html>

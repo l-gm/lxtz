@@ -1,0 +1,51 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page import="cn.dosy.platform.config.utils.PortalMenuUtils"%>
+
+<%
+PortalMenuUtils.findURLMappingTopMenus();
+%>
+
+
+	<!-- 头部工具栏开始 -->
+	<div class="topbar">
+		<div class="container clearfix">
+			<p class="welcome fl">欢迎来到本站！</p>
+			<ul class="topnav fr clearfix">
+				<c:if test="${studentPrincipal != null}">
+					<li><a href="${ctx}/portal/infoCenter/student/basic">个人中心</a></li>
+					<li><a href="${ctx}/logout/student">退出</a></li>
+				</c:if>
+				<c:if test="${merchantPrincipal != null}">
+					<li><a href="${ctx}/portal/infoCenter/merchant/basic">企业中心</a></li>
+					<li><a href="${ctx}/logout/merchant">退出</a></li>
+				</c:if>
+				<c:if test="${studentPrincipal == null && merchantPrincipal == null}">
+					<li><a href="${ctx}/login/student">登录</a></li>
+					<li><a href="${ctx}/register/student?_step=1">注册</a></li>
+				</c:if>
+				<li><a href="${ctx}/portal/usingHelp" target=_blank>帮助</a></li>
+			</ul>
+		</div>
+	</div>
+	<!-- 头部工具栏结束 -->
+	<!-- 头部菜单开始 -->
+	<div class="header">
+		<div class="headerBox container clearfix">
+			<div class="logo fl clearfix">
+				<div class="logoBox">
+				</div>
+			</div>
+			<div class="mainnav fl">
+				<ul class="clearfix">
+					<c:forEach items="${topMenus}" var="topMenu">
+						<li class="${topMenu.active?'active':''}"><a href="${ctx}${topMenu.menuURI}">${topMenu.name}</a></li>
+					</c:forEach>
+				</ul>
+			</div>
+			<div class="mycenter fr">
+				<a></a>
+			</div>
+		</div>
+	</div>
+	<!-- 头部菜单结束 -->

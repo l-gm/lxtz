@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd" [
+<!ENTITY contextInclude SYSTEM "org/springframework/web/context/WEB-INF/contextInclude.xml">
+]>
+
+<beans>
+	<!-- MessageAttachment -->
+	<bean id="messageAttachmentDAO" class="cn.dosy.platform.admin.dao.MessageAttachmentDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="messageAttachmentManagerBase" class="cn.dosy.platform.admin.service.MessageAttachmentManager">
+		<property name="messageAttachmentDAO" ref="messageAttachmentDAO"></property>
+	</bean>
+	
+	<bean id="messageAttachmentManager" parent="transactionBese">
+		<property name="target" ref="messageAttachmentManagerBase"></property>
+	</bean>
+	
+	<!-- Notice -->
+	<bean id="noticeDAO" class="cn.dosy.platform.admin.dao.NoticeDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="noticeManagerBase" class="cn.dosy.platform.admin.service.NoticeManager">
+		<property name="noticeDAO" ref="noticeDAO"></property>
+	</bean>
+	
+	<bean id="noticeManager" parent="transactionBese">
+		<property name="target" ref="noticeManagerBase"></property>
+	</bean>
+	
+	<!-- Financial -->
+	<bean id="financialDAO" class="cn.dosy.platform.admin.dao.FinancialDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="financialManagerBase" class="cn.dosy.platform.admin.service.FinancialManager">
+		<property name="financialDAO" ref="financialDAO"></property>
+	</bean>
+	
+	<bean id="financialManager" parent="transactionBese">
+		<property name="target" ref="financialManagerBase"></property>
+	</bean>
+	
+	<!-- Investment -->
+	<bean id="investmentDAO" class="cn.dosy.platform.admin.dao.InvestmentDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="investmentManagerBase" class="cn.dosy.platform.admin.service.InvestmentManager">
+		<property name="investmentDAO" ref="investmentDAO"></property>
+	</bean>
+	
+	<bean id="investmentManager" parent="transactionBese">
+		<property name="target" ref="investmentManagerBase"></property>
+	</bean>
+	
+	<!-- MindChickenSoup -->
+	<bean id="mindChickenSoupDAO" class="cn.dosy.platform.admin.dao.MindChickenSoupDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="mindChickenSoupManagerBase" class="cn.dosy.platform.admin.service.MindChickenSoupManager">
+		<property name="mindChickenSoupDAO" ref="mindChickenSoupDAO"></property>
+	</bean>
+	
+	<bean id="mindChickenSoupManager" parent="transactionBese">
+		<property name="target" ref="mindChickenSoupManagerBase"></property>
+	</bean>
+	
+	<!-- Example -->
+	<bean id="exampleDAO" class="cn.dosy.platform.admin.dao.ExampleDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="exampleManagerBase" class="cn.dosy.platform.admin.service.ExampleManager">
+		<property name="exampleDAO" ref="exampleDAO"></property>
+	</bean>
+	
+	<bean id="exampleManager" parent="transactionBese">
+		<property name="target" ref="exampleManagerBase"></property>
+	</bean>
+	
+	
+	<!-- CompanyProfile -->
+	<bean id="companyProfileDAO" class="cn.dosy.platform.admin.dao.CompanyProfileDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="companyProfileManagerBase" class="cn.dosy.platform.admin.service.CompanyProfileManager">
+		<property name="companyProfileDAO" ref="companyProfileDAO"></property>
+	</bean>
+	
+	<bean id="companyProfileManager" parent="transactionBese">
+		<property name="target" ref="companyProfileManagerBase"></property>
+	</bean>
+	
+	<!-- Employment -->
+	<bean id="employmentDAO" class="cn.dosy.platform.admin.dao.EmploymentDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="employmentManagerBase" class="cn.dosy.platform.admin.service.EmploymentManager">
+		<property name="employmentDAO" ref="employmentDAO"></property>
+	</bean>
+	
+	<bean id="employmentManager" parent="transactionBese">
+		<property name="target" ref="employmentManagerBase"></property>
+	</bean>
+	
+	<!-- ContactUs -->
+	<bean id="contactUsDAO" class="cn.dosy.platform.admin.dao.ContactUsDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="contactUsManagerBase" class="cn.dosy.platform.admin.service.ContactUsManager">
+		<property name="contactUsDAO" ref="contactUsDAO"></property>
+	</bean>
+	
+	<bean id="contactUsManager" parent="transactionBese">
+		<property name="target" ref="contactUsManagerBase"></property>
+	</bean>
+	
+	<!-- Blogroll -->
+	<bean id="blogrollDAO" class="cn.dosy.platform.admin.dao.BlogrollDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="blogrollManagerBase" class="cn.dosy.platform.admin.service.BlogrollManager">
+		<property name="blogrollDAO" ref="blogrollDAO"></property>
+	</bean>
+	
+	<bean id="blogrollManager" parent="transactionBese">
+		<property name="target" ref="blogrollManagerBase"></property>
+	</bean>
+	
+	<!-- ConversionLayout -->
+	<bean id="conversionLayoutDAO" class="cn.dosy.platform.admin.dao.ConversionLayoutDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="conversionLayoutManagerBase" class="cn.dosy.platform.admin.service.ConversionLayoutManager">
+		<property name="conversionLayoutDAO" ref="conversionLayoutDAO"></property>
+	</bean>
+	
+	<bean id="conversionLayoutManager" parent="transactionBese">
+		<property name="target" ref="conversionLayoutManagerBase"></property>
+	</bean>
+	
+	<!-- AdvMail -->
+	<bean id="advMailDAO" class="cn.dosy.platform.admin.dao.AdvMailDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="advMailManagerBase" class="cn.dosy.platform.admin.service.AdvMailManager">
+		<property name="advMailDAO" ref="advMailDAO"></property>
+	</bean>
+	
+	<bean id="advMailManager" parent="transactionBese">
+		<property name="target" ref="advMailManagerBase"></property>
+	</bean>
+	
+	<!-- AdvShortMessage -->
+	<bean id="advShortMessageDAO" class="cn.dosy.platform.admin.dao.AdvShortMessageDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="advShortMessageManagerBase" class="cn.dosy.platform.admin.service.AdvShortMessageManager">
+		<property name="advShortMessageDAO" ref="advShortMessageDAO"></property>
+	</bean>
+	
+	<bean id="advShortMessageManager" parent="transactionBese">
+		<property name="target" ref="advShortMessageManagerBase"></property>
+	</bean>
+	
+	<!-- AdvVideo -->
+	<bean id="advVideoDAO" class="cn.dosy.platform.admin.dao.AdvVideoDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="advVideoManagerBase" class="cn.dosy.platform.admin.service.AdvVideoManager">
+		<property name="advVideoDAO" ref="advVideoDAO"></property>
+	</bean>
+	
+	<bean id="advVideoManager" parent="transactionBese">
+		<property name="target" ref="advVideoManagerBase"></property>
+	</bean>
+	
+	<!-- AdvImg -->
+	<bean id="advImgDAO" class="cn.dosy.platform.admin.dao.AdvImgDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="advImgManagerBase" class="cn.dosy.platform.admin.service.AdvImgManager">
+		<property name="advImgDAO" ref="advImgDAO"></property>
+	</bean>
+	
+	<bean id="advImgManager" parent="transactionBese">
+		<property name="target" ref="advImgManagerBase"></property>
+	</bean>
+	
+	<!-- AdvMusic -->
+	<bean id="advMusicDAO" class="cn.dosy.platform.admin.dao.AdvMusicDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="advMusicManagerBase" class="cn.dosy.platform.admin.service.AdvMusicManager">
+		<property name="advMusicDAO" ref="advMusicDAO"></property>
+	</bean>
+	
+	<bean id="advMusicManager" parent="transactionBese">
+		<property name="target" ref="advMusicManagerBase"></property>
+	</bean>
+	
+		<!-- UsingHelp -->
+	<bean id="usingHelpDAO" class="cn.dosy.platform.admin.dao.UsingHelpDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="usingHelpManagerBase" class="cn.dosy.platform.admin.service.UsingHelpManager">
+		<property name="usingHelpDAO" ref="usingHelpDAO"></property>
+	</bean>
+	
+	<bean id="usingHelpManager" parent="transactionBese">
+		<property name="target" ref="usingHelpManagerBase"></property>
+	</bean>
+	
+</beans>
